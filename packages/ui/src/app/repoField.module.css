@@ -1,0 +1,31 @@
+.container {
+  display: flex;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+.field {
+  display: flex;
+  width: 100px;
+  padding: 10px;
+  align-items: center;
+  border: 1px solid var(--color-grey-200);
+  border-radius: var(--border-radius) 0px 0px var(--border-radius);
+  background: var(--color-grey-200);
+}
+
+.entry {
+  display: flex;
+  padding: 10px;
+  align-items: center;
+  gap: 10px;
+  flex: 1 0 0;
+  border-radius: 0px var(--border-radius) var(--border-radius) 0px;
+  border-top: 1px solid var(--color-grey-200);
+  border-right: 1px solid var(--color-grey-200);
+  border-bottom: 1px solid var(--color-grey-200);
+}
+
+.branch {
+  color: var(--color-blue-500);
+}

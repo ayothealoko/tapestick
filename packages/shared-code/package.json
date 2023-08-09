@@ -1,0 +1,34 @@
+{
+  "name": "shared-code",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "Ayokanmi Aloko <ayothealoko@gmail.com>",
+  "homepage": "https://github.com/ayothealoko/gitslate#readme",
+  "license": "ISC",
+  "type": "module",
+  "source": "lib/index.ts",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "require": "./dist/index.cjs",
+    "default": "./dist/index.modern.js",
+    "types": "./dist/index.d.ts"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.module.js",
+  "unpkg": "./dist/index.umd.js",
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch",
+    "test": "node ./__tests__/shared-code.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ayothealoko/gitslate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ayothealoko/gitslate/issues"
+  },
+  "devDependencies": {
+    "microbundle": "^0.15.1"
+  }
+}
