@@ -2,7 +2,6 @@ import { Status, StatusFile, statusRecord } from "shared-code";
 import { fileURLToPath } from "url";
 import git from "isomorphic-git";
 import fs from "fs";
-import path from "path";
 
 export async function getStatusModel(gitDirURI: URL): Promise<Status> {
   const status = await git.statusMatrix({
@@ -18,10 +17,13 @@ function matrixToFile(
   status: Awaited<ReturnType<typeof git.statusMatrix>>
 ): StatusFile[] {
   const ans = status.map((v) => {
+    let status = v.slice(1) as number[];
+    let serializeId = serialize(v);
     let file: StatusFile = {
-      status: v.slice(1) as number[],
+      status: status,
       fileName: v[0],
-      serialize: serialize(v),
+      serialize: serializeId,
+      statusField: statusRecord[serializeId],
     };
 
     return file;
@@ -36,25 +38,13 @@ function statusSections(files: StatusFile[]): Status {
     staged: [],
     untracked: [],
     unmodified: [],
+    notFound: [],
   };
 
   files.forEach((v) => {
-    const section = statusRecord[v.serialize];
-    if (section.isDeleted === true) {
-      v.isDeleted = true;
-    }
-
-    if (Array.isArray(section.section)) {
-      section.section.forEach((s) => {
-        if (s in status) {
-          status[s].push(v);
-        }
-      });
-    } else {
-      if (section.section in status) {
-        status[section.section].push(v);
-      }
-    }
+    v.statusField.forEach((s) => {
+      status[s.type].push(v);
+    });
   });
 
   return status;

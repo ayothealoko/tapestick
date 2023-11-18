@@ -1,5 +1,4 @@
 import { URL } from "url";
-import { AppError } from "../errors/appError.js";
 import { getStatusModel } from "../model/git/status.js";
 
 import { Status } from "shared-code";

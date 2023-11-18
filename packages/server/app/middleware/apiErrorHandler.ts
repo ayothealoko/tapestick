@@ -9,8 +9,14 @@ export function apiErrorHandler(
   _next: NextFunction
 ) {
   if (err instanceof CustomError) {
-    logger.error(err.serializeError());
-    res.status(err.errorCode).json(err.serializeError());
+    const errMsg = err.serializeErrorInternal();
+
+    const message = `${errMsg.message}
+errorType:${errMsg.errorType}
+${errMsg.stack}`;
+
+    logger.error(message);
+    res.status(err.errorCode).json(err.serializeErrorExternal());
   } else {
     logger.error(err);
     res.status(500).json({

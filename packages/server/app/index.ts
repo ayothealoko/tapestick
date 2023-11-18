@@ -1,16 +1,14 @@
-import express, { Express } from "express";
-import * as dotenv from "dotenv";
-import { statusRouter } from "./routes/index.js";
-import { apiErrorHandler } from "./middleware/apiErrorHandler.js";
-
-dotenv.config();
-const app: Express = express();
-
-app.use("/v1/status", statusRouter);
-app.use("/v1", apiErrorHandler);
+import { logger } from "./logger/index.js";
+import { app } from "./app.js";
 
 const server = app.listen(8000, function () {
-  const address = server.address();
+  let address = server.address();
+  if (address !== null && typeof address !== "string") {
+    address = `port ${address.port}`;
+  }
 
-  console.log("App listening at %s", address);
+  logger.log({
+    level: "info",
+    message: `App listening at ${address}`,
+  });
 });

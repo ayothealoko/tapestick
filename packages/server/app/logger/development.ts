@@ -1,5 +1,5 @@
 import { createLogger, format, transports } from "winston";
-const { combine, timestamp, label, printf, json } = format;
+const { combine, timestamp, printf } = format;
 
 export const devLogger = () => {
   const myFormat = printf(({ level, message, timestamp }) => {
@@ -9,12 +9,7 @@ export const devLogger = () => {
   return createLogger({
     level: "debug",
     // format: winston.format.simple(),
-    format: combine(
-      format.colorize(),
-      label({ label: "right meow!" }),
-      timestamp({ format: "HH:mm:ss" }),
-      myFormat
-    ),
+    format: combine(format.colorize(), timestamp(), myFormat),
 
     //defaultMeta: { service: 'user-service' },
     transports: [new transports.Console()],
