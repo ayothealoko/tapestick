@@ -1,10 +1,10 @@
 import { z } from "zod";
 import { NextFunction, Request, Response } from "express";
+import { getGitDirBySessionService } from "../service/gitDir.js";
 import { getStatusService } from "../service/status.js";
 import { Status } from "shared-code";
 import { getStatusSchema } from "../validation/status.js";
 import { ValidationError } from "../errors/validationError.js";
-import { SESSION } from "../model/session.js";
 import { AuthError } from "../errors/authError.js";
 
 export const getStatusController = async (
@@ -16,11 +16,12 @@ export const getStatusController = async (
   try {
     body = await getStatusSchema.parseAsync(req.query);
 
-    let fileURI = SESSION.getGidDir(body.session);
-    if (fileURI === undefined) {
+    const gitDir = await getGitDirBySessionService(body.session);
+
+    if (gitDir === undefined) {
       throw new AuthError("Session Invalid");
     }
-    const status: Status = await getStatusService(fileURI);
+    const status: Status = await getStatusService(gitDir);
 
     res.status(200);
     res.json(status);

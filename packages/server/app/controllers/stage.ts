@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { postStageService } from "../service/stage.js";
-import { getGitDirSessionService } from "../service/gitDir.js";
+import { getGitDirBySessionService } from "../service/gitDir.js";
 import { AppError } from "../errors/appError.js";
 import { errorIfUndefined } from "../errors/helpers.js";
 import { postStageSchema } from "../validation/stage.js";
@@ -20,7 +20,7 @@ export const postStageController = async (
     } catch {
       throw new ValidationError("Request not valid");
     }
-    const gitDir = await getGitDirSessionService(body.session);
+    const gitDir = await getGitDirBySessionService(body.session);
 
     errorIfUndefined(new AppError("Session not registered"), gitDir);
 

@@ -1,8 +1,8 @@
 import { URL } from "url";
 import { getGitDirModel } from "../model/git/gitDir.js";
-import { SESSION } from "../model/session.js";
 import { errorIfUndefined } from "../errors/helpers.js";
 import { AppError } from "../errors/appError.js";
+import { SESSION } from "../model/session.js";
 
 export async function getGitDirService(): Promise<URL> {
   const gitDir = await getGitDirModel();
@@ -12,13 +12,7 @@ export async function getGitDirService(): Promise<URL> {
   return gitDir;
 }
 
-export async function createGitDirSessionService(
-  gitDir: URL
-): Promise<string | undefined> {
-  return SESSION.createSession(gitDir);
-}
-
-export async function getGitDirSessionService(
+export async function getGitDirBySessionService(
   session: string
 ): Promise<URL | undefined> {
   return SESSION.getGidDir(session);
