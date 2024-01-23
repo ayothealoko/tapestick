@@ -10,15 +10,15 @@
   "types": "./dist/index.d.ts",
   "exports": {
     "require": "./dist/index.cjs",
-    "default": "./dist/index.modern.js",
-    "types": "./dist/index.d.ts"
+    "types": "./dist/index.d.ts",
+    "default": "./dist/index.modern.js"
   },
   "main": "./dist/index.cjs",
   "module": "./dist/index.module.js",
   "unpkg": "./dist/index.umd.js",
   "scripts": {
-    "build": "microbundle",
-    "dev": "microbundle watch",
+    "build": "microbundle --strict",
+    "dev": "microbundle watch --strict",
     "test": "node ./__tests__/shared-code.test.js"
   },
   "repository": {
@@ -30,5 +30,8 @@
   },
   "devDependencies": {
     "microbundle": "^0.15.1"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
   }
 }

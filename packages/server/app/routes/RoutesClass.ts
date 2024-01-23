@@ -28,8 +28,11 @@ export class Route {
 export class RouterClass {
   router: Router;
 
-  constructor() {
+  constructor(middleware?: Middleware[]) {
     this.router = Router();
+    if (middleware) {
+      this.router.use(middleware);
+    }
   }
 
   get(route: Route) {

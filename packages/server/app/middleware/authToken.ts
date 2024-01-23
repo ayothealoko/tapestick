@@ -1,22 +1,22 @@
-import { Request, Response, NextFunction } from "express";
-import { authTokenService } from "../service/authToken.js";
-import { AuthError } from "../errors/authError.js";
+import bcrypt from "bcrypt";
+import { getUserByEmailService } from "../service/auth/getUser.js";
 
-export async function authToken(
-  req: Request,
-  res: Response,
-  next: NextFunction
+export async function verifyLocal(
+  username: string,
+  password: string,
+  cb: (...args: any[]) => any
 ) {
-  const apiAuth = req.headers.authorization;
-  const apiKey = apiAuth.split(" ");
-  let isValidAuth = false;
-  if ((apiKey.length === 2, apiKey[0] === "Bearer")) {
-    isValidAuth = await authTokenService(apiKey[1]);
-  }
+  //not username actually email
 
-  if (isValidAuth) {
-    next();
-  } else {
-    next(new AuthError("Invalid credentials"));
+  try {
+    const user = await getUserByEmailService({ user_email: username });
+    const compare = await bcrypt.compare(password, user[0].password_hash);
+    if (compare) {
+      return cb(null, user);
+    }
+
+    return cb(null, false);
+  } catch (err) {
+    return cb(err);
   }
 }

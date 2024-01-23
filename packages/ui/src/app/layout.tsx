@@ -1,19 +1,23 @@
 import "./globals.css";
-import { Roboto_Mono, Montserrat } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
+import Header from "./_components/Header/";
+import Footer from "./_components/Footer";
+import styles from "./layout.module.css";
 
-const robotMono = Roboto_Mono({
-  weight: ["400"],
+const inter = Inter({
+  weight: ["400", "700"],
   subsets: ["latin"],
-  variable: "--montserrat",
+  variable: "--Inter",
 });
 const monteserrat = Montserrat({
-  weight: ["400", "500"],
+  weight: ["400", "700"],
   subsets: ["latin"],
+  variable: "--Montserrat",
 });
 
 export const metadata = {
-  title: "Calulator Press",
-  description: "Quality calculators for your businesses",
+  title: "Tape stick",
+  description: "The CRM you stick with",
 };
 
 export default function RootLayout({
@@ -23,8 +27,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${monteserrat.className} ${robotMono.variable} `}>
-        {children}
+      <body className={`${styles.body} ${inter.variable}`}>
+        <Header />
+        <main className={styles.main}>{children}</main>
+        <Footer />
       </body>
     </html>
   );

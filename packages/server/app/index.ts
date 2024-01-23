@@ -1,3 +1,4 @@
+import "./env.ts";
 import { logger } from "./logger/index.js";
 import { app } from "./app.js";
 

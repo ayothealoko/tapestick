@@ -1,6 +1,4 @@
-import statusRouter from "./status.js";
-import gitDirRouter from "./gitDir.js";
-import stageRouter from "./stage.js";
-import sessionRouter from "./session.js";
+import signupRouter from "./signup.js";
+import loginRouter from "./login.js";
 
-export { statusRouter, gitDirRouter, stageRouter, sessionRouter };
+export { signupRouter, loginRouter };

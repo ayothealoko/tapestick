@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  justify-content: center;
+  padding-top: 48px;
+  padding-bottom: 200px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 500px;
+}
+
+.h1 {
+  color: var(--color-on-surface);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.highlight {
+  color: var(--color-blue-500);
+}
+
+.member {
+  color: var(--color-on-surface);
+  text-align: center;
+  width: 100%;
+}
+
+.formErr {
+  color: var(--color-red-warning-text);
+  background-color: var(--color-red-warning);
+  outline: 2px solid var(--color-red-warning);
+  padding: 8px;
+  border-radius: 4px;
+}

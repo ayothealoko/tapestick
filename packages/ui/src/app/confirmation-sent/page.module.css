@@ -1,0 +1,27 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  margin-top: 134px;
+  text-align: center;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.h1 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 100%;
+  color: var(--color-secondary);
+}
+
+.highlight {
+  color: var(--color-blue-500);
+}
+
+.contentWrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-direction: column;
+  gap: 0px;
+}
