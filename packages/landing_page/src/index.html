@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tapestick</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="./css/typography.css" />
+    <link rel="stylesheet" href="./css/general.css" />
+    <link rel="stylesheet" href="./css/index.css" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <img class="logo" src="img/logo.svg" alt="logo" />
+      </header>
+      <main class="section horizontal_section">
+        <div class="hero_text">
+          <h1 class="h1">Increase your sales rep’s productivity</h1>
+          <p class="h5">
+            Tapestick helps you streamline your sales process by unifying your
+            information and automating redundant tasks
+          </p>
+          <a href="https://tally.so/r/nP6XG5" class="cta_button h5"
+            >Start free! No card required</a
+          >
+        </div>
+        <div class="hero_img">
+          <img
+            class="section_img"
+            src="img/hero_img.png"
+            alt="multiple messages handles by only 3 agents"
+          />
+        </div>
+      </main>
+      <section class="section vertical_section">
+        <div class="vertical_text">
+          <h2 class="h2">The best way to sell on MorphMarket</h2>
+          <p class="h5">
+            Do all you work in one place. No more spreadsheets, multiple tabs or
+            task switching. View, track and edit all you information on
+            tapestick
+          </p>
+        </div>
+        <div>
+          <img
+            class="section_img"
+            src="img/sell_on_morph.jpg"
+            alt="Shows emails inbox of app"
+          />
+        </div>
+      </section>
+      <section class="section breeder_section">
+        <div class="vertical_text">
+          <h2 class="h2">Built for breeders</h2>
+          <p class="h5">
+            Everything from Inventory to invoices is built with breeders in
+            mind. Easy setup with free implementation and customization.
+          </p>
+        </div>
+        <div class="breeder_card_container">
+          <div class="breeder_card">
+            <div>
+              <h5 class="h5">Invoicing made easy and seamless</h5>
+              <div>
+                <img
+                  class="section_img"
+                  src="img/invoice_sample.svg"
+                  alt="shows invoice sample"
+                />
+              </div>
+            </div>
+            <div>
+              <h5 class="h5">Collect payment from any provider</h5>
+              <div>
+                <img
+                  class="section_img"
+                  src="img/payment_providers.png"
+                  alt="shows supported payment providers"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="breeder_card">
+            <div>
+              <h5 class="h5">Track you animals across various platforms</h5>
+              <div>
+                <img
+                  class="section_img"
+                  src="img/inventory.png"
+                  alt="shows inventory of animals"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section vertical_section">
+        <div class="vertical_text">
+          <h2 class="h2">Frequently asked questions</h2>
+          <div>
+            <div x-data="{open:false}" class="faq_item">
+              <div @click="open = !open" class="faq_header">
+                <h5 class="h5">How much does tape stick cost?</h5>
+                <button class="button_icon">
+                  <img
+                    x-bind:class="open? '': 'button_icon_rotated'"
+                    class="button_icon"
+                    src="img/caret.svg"
+                    alt="carret"
+                  />
+                </button>
+              </div>
+              <p x-show="open" x-transition class="faq_p p">
+                Currently we are in alpha. So it is free but eventually it will
+                cost $25 per user.
+              </p>
+            </div>
+          </div>
+
+          <div x-data="{open:false}" class="faq_item">
+            <div @click="open = !open" class="faq_header">
+              <h5 class="h5">What is tapestick?</h5>
+              <button class="button_icon">
+                <img
+                  x-bind:class="open? '': 'button_icon_rotated'"
+                  class="button_icon"
+                  src="img/caret.svg"
+                  alt="carret"
+                />
+              </button>
+            </div>
+            <p x-show="open" x-transition class="faq_p p">
+              Tapestick is a platform for breeders to connect all their tools
+              for selling.
+            </p>
+          </div>
+
+          <div x-data="{open:false}" class="faq_item">
+            <div @click="open = !open" class="faq_header">
+              <h5 class="h5">What can you integrate with?</h5>
+              <button class="button_icon">
+                <img
+                  x-bind:class="open? '': 'button_icon_rotated'"
+                  class="button_icon"
+                  src="img/caret.svg"
+                  alt="carret"
+                />
+              </button>
+            </div>
+            <p x-show="open" x-transition class="faq_p p">
+              Currently we integrate with all the major payment platforms, ,
+              Quickbooks, Gmail, whatsapp, instagram, text message, call and
+              Morphmarket
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section horizontal_section desktop_align_center">
+        <div class="happy_img">
+          <img
+            class="section_img"
+            src="img/happy_customers.jpg"
+            alt="Shows happy customers"
+          />
+        </div>
+        <div class="vertical_text">
+          <h2 class="h2">Build relationships with your customers</h2>
+          <p class="h5">
+            Immediately improve you sales process with tapestick. Never forget
+            what matters to you customers
+          </p>
+          <a href="https://tally.so/r/nP6XG5" class="cta_button h5"
+            >Start free! No card required</a
+          >
+        </div>
+      </section>
+      <footer class="section horizontal_section footer">
+        <div>
+          <img src="img/logo_alternate.svg" alt="Shows compan logo" />
+          <p class="p">© 2023 Tape Stick</p>
+        </div>
+
+        <div class="footer_link_container">
+          <div class="footer_link_group">
+            <h5 class="p-bold">Legal</h5>
+            <a class="footer_link p" href="#">Privacy policy</a>
+            <a class="footer_link p" href="#">Terms of service</a>
+          </div>
+          <div class="footer_link_group">
+            <h5 class="p-bold">Resources</h5>
+            <a class="footer_link p" href="#">Support</a>
+            <a class="footer_link p" href="#">Status</a>
+            <a class="footer_link p" href="#">Roadmap</a>
+            <a class="footer_link p" href="#">Changelog</a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

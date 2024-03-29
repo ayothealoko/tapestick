@@ -1,5 +1,7 @@
-import "./env.ts";
-import { logger } from "./logger/index.js";
+import "./env.js";
+
+import { logger } from "@/loggers/log.js";
+
 import { app } from "./app.js";
 
 const server = app.listen(8000, function () {

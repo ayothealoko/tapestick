@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.logoContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profileContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-grey-400);
+  color: var(--color-grey-100);
+  border-radius: 12px;
+}
