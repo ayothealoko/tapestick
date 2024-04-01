@@ -9,10 +9,8 @@ export function useLoggedInRedirect(equalTo: boolean, redirect: string) {
     isLoggeedInRequest()
       .then((res) => {
         const data = res.data;
-        console.log(data);
 
         if (data.isLoggedIn === equalTo) {
-          console.log("redirect");
           router.push(redirect);
         }
       })
