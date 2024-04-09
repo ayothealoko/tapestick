@@ -1,14 +1,43 @@
+"use client";
+
+import clsx from "clsx";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
+import contactImg from "../../../_assets/contacts.svg";
+import inboxImg from "../../../_assets/inbox.svg";
+import dealsImg from "../../../_assets/deals.svg";
+import inventoryImg from "../../../_assets/inventory.svg";
+import invoicesImg from "../../../_assets/invoices.svg";
+import supportImg from "../../../_assets/support.svg";
+
+import styles from "./index.module.css";
+
+const routes = [
+  { src: inboxImg, alt: "Logo inbox", href: "/", text: "Inbox" },
+  { src: contactImg, alt: "Logo contacts", href: "#", text: "Contacts" },
+  { src: dealsImg, alt: "Logo deals", href: "#", text: "Deals" },
+  {
+    src: inventoryImg,
+    alt: "Logo inventory",
+    href: "#",
+    text: "Inventory",
+  },
+  { src: invoicesImg, alt: "Logo invoices", href: "#", text: "Invoices" },
+  { src: supportImg, alt: "Logo support", href: "#", text: "Support" },
+];
 export default function Sidebar() {
+  const path = usePathname();
+
   return (
-    <div>
-      <Item href="#" alt="Logo inbox" src="" text="Inbox" />
-      <Item href="#" alt="Logo contacts" src="" text="Contacts" />
-      <Item href="#" alt="Logo deals" src="" text="Deals" />
-      <Item href="#" alt="Logo inventory" src="" text="Inventory" />
-      <Item href="#" alt="Logo invoices" src="" text="Invoices" />
-      <Item href="#" alt="Logo support" src="" text="Support" />
+    <div className={styles.container}>
+      {routes.map((r) => {
+        if (includesNavPath(path, r.href)) {
+          return <Item {...r} active key={r.text + r.href} />;
+        } else {
+          return <Item {...r} key={r.text + r.href} />;
+        }
+      })}
     </div>
   );
 }
@@ -18,13 +47,25 @@ interface ItemProps {
   src: string;
   text: string;
   href: string;
+  active?: boolean;
 }
 
-function Item({ alt, src, text }: ItemProps) {
+function Item({ href, alt, src, text, active }: ItemProps) {
   return (
-    <a>
-      <Image src={src} alt={alt} />
-      <span>{text}</span>
+    <a
+      href={href}
+      className={clsx(styles.link, { [styles.link_active]: active })}
+    >
+      <Image width="16" height="16" src={src} alt={alt} />
+      <span className={clsx("p", styles.item_span)}>{text}</span>
     </a>
   );
+}
+
+// Modified to let home work
+function includesNavPath(path: string, href: string): boolean {
+  if (path === "/") {
+    return path === href;
+  }
+  return href.includes(path);
 }

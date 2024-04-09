@@ -8,3 +8,7 @@
 .main {
   flex: 1;
 }
+
+.container {
+  display: flex;
+}

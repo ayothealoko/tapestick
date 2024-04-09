@@ -1,6 +1,6 @@
 :root {
   --color-blue-100: #fefefe;
-  --color-blue-200: #cbd4f1;
+  --color-blue-200: #f0f3fb;
   --color-blue-500: #2651d3;
   --color-blue-700: #193073;
   --color-green-500: #6fa192;
@@ -37,6 +37,16 @@ body,
 .p-bold {
   font-size: 14px;
   font-weight: 700;
+  font-style: normal;
+  line-height: 150%;
+  text-decoration: none;
+  text-transform: none;
+  font-family: var(--Inter);
+}
+
+.p-semibold {
+  font-size: 14px;
+  font-weight: 600;
   font-style: normal;
   line-height: 150%;
   text-decoration: none;
@@ -111,11 +121,11 @@ body {
   margin: 0;
 }
 
-a {
+.a {
   color: inherit;
   text-decoration: none;
 }
 
-a:hover {
+.a:hover {
   text-decoration: underline;
 }

@@ -2,6 +2,7 @@ import "@/globals.css";
 import { Inter } from "next/font/google";
 import Header from "@/(app)/_components/Header/";
 import styles from "./layout.module.css";
+import Sidebar from "./_components/Sidebar";
 
 const inter = Inter({
   weight: ["400", "700"],
@@ -23,7 +24,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${styles.body} ${inter.variable}`}>
         <Header />
-        <main className={styles.main}>{children}</main>
+        <div className={styles.container}>
+          <Sidebar />
+          <main className={styles.main}>{children}</main>
+        </div>
       </body>
     </html>
   );

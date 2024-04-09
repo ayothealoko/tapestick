@@ -1,0 +1,33 @@
+.container {
+  width: 231px;
+  flex-grow: 0;
+  padding: 16px;
+}
+
+.link {
+  width: 100%;
+  display: flex;
+  padding: 16px;
+  gap: 8px;
+  border-radius: var(--border-radius-small);
+  align-items: center;
+  text-decoration: none;
+  margin-bottom: 4px;
+  color: var(--color-on-surface);
+}
+
+.link:hover {
+  background-color: #dfe4e7;
+}
+
+.link:active {
+  background-color: #9aa9b2;
+}
+
+.link_active {
+  background-color: #dfe4e7;
+}
+
+.item_span {
+  text-decoration: none;
+}

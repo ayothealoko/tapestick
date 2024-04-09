@@ -1,0 +1,22 @@
+.tabLink {
+  padding: 8px;
+  padding-bottom: 2px;
+  color: var(--color-on-surface);
+  background-color: var(--color-surface);
+  border: none;
+  /* make same height with active  */
+  border-bottom: solid 1px var(--color-surface);
+}
+
+.tabLink:hover {
+  border-bottom: solid 2px var(--color-border);
+}
+
+.tabLink_active,
+.tabLink_active:hover {
+  border-bottom: solid 2px var(--color-blue-500);
+}
+
+.tabLinkContainer {
+  padding: 0 32px;
+}
