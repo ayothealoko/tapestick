@@ -3,10 +3,10 @@ import { z } from "zod";
 
 import { AppError } from "@/errors/appError.js";
 import { ValidationError } from "@/errors/validationError.js";
-import { CustomError } from "@/errors/customError.js";
 
 import { createUserAuthService } from "../services/createUser.js";
 import { postSignupSchema } from "../validation/signup.js";
+import { CustomError } from "@/errors/customError.js";
 
 export const postSignupController = async (
   req: Request,
@@ -26,25 +26,16 @@ export const postSignupController = async (
       user_last_name: body.lastName,
       email: body.email,
       password: body.password,
+      is_active: true,
+      account_id: body.account_id,
     });
 
     res.status(200).end();
   } catch (err) {
     if (err instanceof CustomError) {
-      if (err.message === "email already used") {
-        res.status(409).json({
-          type: "error",
-          message: err.message,
-        });
-      } else {
-        next(err);
-      }
+      next(err);
     } else {
       next(new AppError("Could not Signup"));
     }
   }
 };
-
-function hashLinkURL(hashLink: string) {
-  return `/validate-email?link=${hashLink}`;
-}

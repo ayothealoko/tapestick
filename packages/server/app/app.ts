@@ -3,7 +3,12 @@ import session from "express-session";
 import passport from "passport";
 import localStrategy from "passport-local";
 import * as dotenv from "dotenv";
-import { isLoggedInRouter, loginRouter, signupRouter } from "@/router/index.js";
+import {
+  createAccountRouter,
+  isLoggedInRouter,
+  loginRouter,
+  signupRouter,
+} from "@/router/index.js";
 import { apiErrorHandler } from "@/middlewares/apiErrorHandler.js";
 import cors, { CorsOptions } from "cors";
 import { AppError } from "./errors/appError.js";
@@ -87,4 +92,5 @@ passport.deserializeUser(async function (id: string, done) {
 app.use("/api/v1/login", loginRouter);
 app.use("/api/v1/login/is-logged-in", isLoggedInRouter);
 app.use("/api/v1/signup", signupRouter);
+app.use("/api/v1/account", createAccountRouter);
 app.use("/api", apiErrorHandler);

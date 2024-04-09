@@ -11,10 +11,13 @@ export async function createUserAuthService({
   user_last_name,
   email,
   password,
-}: Omit<IInsertUserAuthParams["user"], "is_active" | "password_hash"> & {
+  is_active,
+  account_id,
+}: Omit<IInsertUserAuthParams["user"], "password_hash"> & {
   password: string;
 }): Promise<string[]> {
   let password_hash = await bcrypt.hash(password, 10);
+
   try {
     const userId = await setUserAuth({
       user: {
@@ -22,7 +25,8 @@ export async function createUserAuthService({
         user_last_name,
         email,
         password_hash,
-        is_active: false,
+        account_id,
+        is_active,
       },
     });
 

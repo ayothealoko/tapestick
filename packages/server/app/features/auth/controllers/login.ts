@@ -41,17 +41,6 @@ export const postLoginController = async (
       }
     )(req, res, next);
   } catch (err) {
-    if (err instanceof CustomError) {
-      if (err.message === errorMsg) {
-        res.status(409).json({
-          type: "error",
-          message: err.message,
-        });
-      } else {
-        next(err);
-      }
-    } else {
-      next(new AppError("Could not Login"));
-    }
+    next(new AppError("Could not Login"));
   }
 };

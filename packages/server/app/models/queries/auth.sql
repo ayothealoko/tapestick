@@ -1,7 +1,7 @@
 /* @name InsertUserAuth
-   @param user ->  (user_first_name!, user_last_name!, email!, password_hash!, is_active!)
+   @param user ->  (user_first_name!, user_last_name!, email!, password_hash!, is_active!, account_id!)
 */
-INSERT INTO user_auth (user_first_name, user_last_name, email, password_hash, is_active)
+INSERT INTO user_auth (user_first_name, user_last_name, email, password_hash, is_active, account_id)
 VALUES :user! RETURNING user_auth_id ;
 
 /* @name InsertUserSignupEmailConfirm

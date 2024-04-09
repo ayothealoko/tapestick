@@ -1,4 +1,4 @@
-/** Types generated for queries found in "app/model/queries/auth.sql" */
+/** Types generated for queries found in "app/models/queries/auth.sql" */
 import { PreparedQuery } from '@pgtyped/runtime';
 
 /** 'InsertUserAuth' parameters type */
@@ -8,7 +8,8 @@ export interface IInsertUserAuthParams {
     user_last_name: string,
     email: string,
     password_hash: string,
-    is_active: boolean
+    is_active: boolean,
+    account_id: string
   };
 }
 
@@ -23,12 +24,12 @@ export interface IInsertUserAuthQuery {
   result: IInsertUserAuthResult;
 }
 
-const insertUserAuthIR: any = {"usedParamSet":{"user":true},"params":[{"name":"user","required":true,"transform":{"type":"pick_tuple","keys":[{"name":"user_first_name","required":true},{"name":"user_last_name","required":true},{"name":"email","required":true},{"name":"password_hash","required":true},{"name":"is_active","required":true}]},"locs":[{"a":96,"b":101}]}],"statement":"INSERT INTO user_auth (user_first_name, user_last_name, email, password_hash, is_active)\nVALUES :user! RETURNING user_auth_id"};
+const insertUserAuthIR: any = {"usedParamSet":{"user":true},"params":[{"name":"user","required":true,"transform":{"type":"pick_tuple","keys":[{"name":"user_first_name","required":true},{"name":"user_last_name","required":true},{"name":"email","required":true},{"name":"password_hash","required":true},{"name":"is_active","required":true},{"name":"account_id","required":true}]},"locs":[{"a":108,"b":113}]}],"statement":"INSERT INTO user_auth (user_first_name, user_last_name, email, password_hash, is_active, account_id)\nVALUES :user! RETURNING user_auth_id"};
 
 /**
  * Query generated from SQL:
  * ```
- * INSERT INTO user_auth (user_first_name, user_last_name, email, password_hash, is_active)
+ * INSERT INTO user_auth (user_first_name, user_last_name, email, password_hash, is_active, account_id)
  * VALUES :user! RETURNING user_auth_id
  * ```
  */
