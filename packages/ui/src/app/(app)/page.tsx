@@ -7,7 +7,7 @@ import ButtonLink from "./_components/ButtonLink";
 import Inbox from "./_components/Inbox";
 
 export default function Home() {
-  useLoggedInRedirect(false, "./");
+  useLoggedInRedirect(false, "/login");
   return (
     <div className={styles.wrapper}>
       <div className={styles.buttonRow}>

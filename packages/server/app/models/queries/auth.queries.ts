@@ -107,6 +107,7 @@ export interface IGetUserByEmailParams {
 
 /** 'GetUserByEmail' return type */
 export interface IGetUserByEmailResult {
+  account_id: string;
   created_on: Date;
   email: string;
   is_active: boolean;
@@ -123,12 +124,12 @@ export interface IGetUserByEmailQuery {
   result: IGetUserByEmailResult;
 }
 
-const getUserByEmailIR: any = {"usedParamSet":{"user_email":true},"params":[{"name":"user_email","required":true,"transform":{"type":"scalar"},"locs":[{"a":146,"b":157}]}],"statement":"SELECT user_auth_id, user_first_name, user_last_name, email, password_hash, is_active, created_on, last_modified\nFROM user_auth a\nWHERE a.email = :user_email!"};
+const getUserByEmailIR: any = {"usedParamSet":{"user_email":true},"params":[{"name":"user_email","required":true,"transform":{"type":"scalar"},"locs":[{"a":158,"b":169}]}],"statement":"SELECT user_auth_id, user_first_name, user_last_name, email, password_hash, is_active, created_on, last_modified, account_id\nFROM user_auth a\nWHERE a.email = :user_email!"};
 
 /**
  * Query generated from SQL:
  * ```
- * SELECT user_auth_id, user_first_name, user_last_name, email, password_hash, is_active, created_on, last_modified
+ * SELECT user_auth_id, user_first_name, user_last_name, email, password_hash, is_active, created_on, last_modified, account_id
  * FROM user_auth a
  * WHERE a.email = :user_email!
  * ```

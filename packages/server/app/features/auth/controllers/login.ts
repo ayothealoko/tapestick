@@ -1,14 +1,12 @@
+import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
 import { z } from "zod";
-import passport from "passport";
 
 import { AppError } from "@/errors/appError.js";
 import { ValidationError } from "@/errors/validationError.js";
-import { CustomError } from "@/errors/customError.js";
-import { IGetUserByIdResult } from "@/models/queries/auth.queries.js";
 
 import { postLoginSchema } from "../validation/login.js";
-import { AuthError } from "@/errors/authError.js";
+import { getUserByEmailService } from "../services/getUser.js";
 
 const errorMsg = "Incorrect email or password";
 
@@ -25,21 +23,21 @@ export const postLoginController = async (
       throw new ValidationError(errorMsg);
     }
 
-    passport.authenticate(
-      "local",
-      function (err: any, user: IGetUserByIdResult, _: any) {
-        if (err || !user) {
-          throw new AuthError(errorMsg);
-        }
-        req.login(user, function (err) {
-          if (err) {
-            throw new AuthError(errorMsg);
-          } else {
-            return res.status(200).json({ type: "success" });
-          }
-        });
-      }
-    )(req, res, next);
+    const user = await getUserByEmailService({
+      user_email: body.email,
+    });
+
+    const isValidPassword = await bcrypt.compare(
+      body.password,
+      user.password_hash
+    );
+
+    if (isValidPassword) {
+      req.session.user_id = user.user_auth_id;
+      req.session.account_id = user.account_id;
+    }
+
+    res.json({ is_authenticated: true });
   } catch (err) {
     next(new AppError("Could not Login"));
   }

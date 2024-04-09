@@ -25,7 +25,7 @@ interface IsLoggedInResponse {
 async function isLoggeedInRequest<T = IsLoggedInResponse>(): Promise<
   AxiosResponse<T, any>
 > {
-  return axios.get<T>("/api/v1/login/is-logged-in", {
+  return axios.get<T>("/api/v1/auth/is-logged-in", {
     withCredentials: true,
     headers: {
       Accept: "application/json",

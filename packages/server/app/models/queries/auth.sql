@@ -23,7 +23,7 @@ WHERE b.user_signup_email_confirm_id = :user_signup_email_confirm_id!
 
 /* @name GetUserByEmail
 */
-SELECT user_auth_id, user_first_name, user_last_name, email, password_hash, is_active, created_on, last_modified
+SELECT user_auth_id, user_first_name, user_last_name, email, password_hash, is_active, created_on, last_modified, account_id
 FROM user_auth a
 WHERE a.email = :user_email!;
 

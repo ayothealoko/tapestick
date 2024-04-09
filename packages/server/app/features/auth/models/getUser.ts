@@ -12,7 +12,7 @@ export async function getUserByEmailModel(
   const user = await getClient((client) => {
     return getUserByEmail.run(user_email_obj, client);
   });
-  return user;
+  return user[0];
 }
 
 export async function getUserByIdModel(user_id_obj: IGetUserByIdParams) {

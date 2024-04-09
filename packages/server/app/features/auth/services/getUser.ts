@@ -1,6 +1,7 @@
 import { AuthError } from "@/errors/authError.js";
 import {
   IGetUserByEmailParams,
+  IGetUserByEmailResult,
   IGetUserByIdParams,
 } from "@/models/queries/auth.queries.js";
 
@@ -8,7 +9,7 @@ import { getUserByEmailModel, getUserByIdModel } from "../models/getUser.js";
 
 export async function getUserByEmailService(
   user_email_obj: IGetUserByEmailParams
-) {
+): Promise<IGetUserByEmailResult> {
   try {
     const user = getUserByEmailModel(user_email_obj);
     return user;

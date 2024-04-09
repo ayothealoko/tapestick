@@ -41,7 +41,7 @@ interface FormSentStatus {
 }
 
 export default function Page() {
-  useLoggedInRedirect(true, "./");
+  useLoggedInRedirect(true, "/");
   const router = useRouter();
   const {
     handleSubmit,
@@ -138,7 +138,7 @@ interface FormResponse {
 async function sendLogin<T = FormResponse>(
   data: LoginFormSchema
 ): Promise<AxiosResponse<T, any>> {
-  return axios.post<T>("/api/v1/login", data, {
+  return axios.post<T>("/api/v1/auth/login", data, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
