@@ -5,7 +5,7 @@ export const getIsLoggedInController = async (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.user) {
+  if (req.session.user_id) {
     res.json({ isLoggedIn: true });
   } else {
     res.json({ isLoggedIn: false });
