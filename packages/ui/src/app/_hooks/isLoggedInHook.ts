@@ -1,34 +1,28 @@
-import axios, { AxiosResponse } from "axios";
+import { useAuthControllerIsLoggedInMutation } from "@lib/features/api/api.service";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // if isLoggedIn !== equalTo redirect
 export function useLoggedInRedirect(equalTo: boolean, redirect: string) {
+  const [getIsLoggedIn, { isLoading, error, data }] =
+    useAuthControllerIsLoggedInMutation();
   const router = useRouter();
+  console.log(error);
   useEffect(() => {
-    isLoggeedInRequest()
-      .then((res) => {
-        const data = res.data;
-
-        if (data.isLoggedIn === equalTo) {
-          router.push(redirect);
-        }
-      })
-      .catch();
-  }, []);
+    if (!data && !error && !isLoading) {
+      getIsLoggedIn();
+    } else if (data?.isLoggedIn === equalTo) {
+      router.push(redirect);
+    } else if (true && isError401(error) && !equalTo) {
+      // equalTo to is false when error 401
+      router.push(redirect);
+    }
+  }, [data, error, isLoading, getIsLoggedIn, router, redirect, equalTo]);
 }
 
-interface IsLoggedInResponse {
-  isLoggedIn: boolean;
-}
-
-async function isLoggeedInRequest<T = IsLoggedInResponse>(): Promise<
-  AxiosResponse<T, any>
-> {
-  return axios.get<T>("/api/v1/auth/is-logged-in", {
-    withCredentials: true,
-    headers: {
-      Accept: "application/json",
-    },
-  });
+function isError401(err: any): boolean {
+  if (err !== undefined && err.status === 401) {
+    return true;
+  }
+  return false;
 }

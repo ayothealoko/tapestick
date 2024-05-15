@@ -3,8 +3,8 @@ import styles from "./index.module.css";
 import clsx from "clsx";
 import React, { MouseEventHandler, forwardRef, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import openEye from "@/_assets/openeye.svg";
-import closedEye from "@/_assets/closedeye.svg";
+import openEye from "@app/_assets/openeye.svg";
+import closedEye from "@app/_assets/closedeye.svg";
 import Image from "next/image";
 
 export interface TextInputProps {
@@ -18,7 +18,7 @@ export interface TextInputProps {
   error?: string;
 }
 
-export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
+export const TextInput = React.forwardRef<HTMLInputElement, TextInputProps>(
   function TextInput(
     { name, label, id, isRequired, variant, error, onChange, onBlur },
     ref
@@ -76,12 +76,12 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   }
 );
 
-interface ErrorMsg {
+interface ErrorMsgProps {
   msg: string;
 }
 
-const ErrorMsg = React.forwardRef<HTMLParagraphElement, ErrorMsg>(
-  function ErrorMsg({ msg }: ErrorMsg, ref) {
+const ErrorMsg = React.forwardRef<HTMLParagraphElement, ErrorMsgProps>(
+  function ErrorMsg({ msg }: ErrorMsgProps, ref) {
     return (
       <p ref={ref} className={styles.errorMsg}>
         {msg}

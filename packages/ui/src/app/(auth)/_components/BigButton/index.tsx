@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import React from "react";
 import styles from "./index.module.css";
-import Spinner from "@/(auth)/_components/Spinner";
+import Spinner from "@app/(auth)/_components/Spinner";
 interface BigButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   text: string;
   isLoading?: boolean;

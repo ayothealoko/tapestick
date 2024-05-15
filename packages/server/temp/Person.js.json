@@ -1,0 +1,1 @@
+{"data":{"_id":0,"properties":{},"primaryKeys":[],"filters":{},"hooks":{},"indexes":[],"uniques":[],"className":"Person","path":"./dist/person/entities/person.entity.js","abstract":true,"internal":true,"constructorParams":[],"toJsonParams":[],"useCache":true},"origin":"./dist/person/entities/person.entity.js","hash":"6b0bd3d2fd444dc1ea6ae337dbe9e53a","version":"6.2.1"}

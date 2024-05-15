@@ -4,12 +4,12 @@ import clsx from "clsx";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 
-import contactImg from "../../../_assets/contacts.svg";
-import inboxImg from "../../../_assets/inbox.svg";
-import dealsImg from "../../../_assets/deals.svg";
-import inventoryImg from "../../../_assets/inventory.svg";
-import invoicesImg from "../../../_assets/invoices.svg";
-import supportImg from "../../../_assets/support.svg";
+import contactImg from "@app/_assets/contacts.svg";
+import inboxImg from "@app/_assets/inbox.svg";
+import dealsImg from "@app/_assets/deals.svg";
+import inventoryImg from "@app/_assets/inventory.svg";
+import invoicesImg from "@app/_assets/invoices.svg";
+import supportImg from "@app/_assets/support.svg";
 
 import styles from "./index.module.css";
 

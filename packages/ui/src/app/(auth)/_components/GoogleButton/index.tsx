@@ -2,7 +2,7 @@ import clsx from "clsx";
 import React from "react";
 import styles from "./index.module.css";
 import Image from "next/image";
-import googleIcon from "@/_assets/google.svg";
+import googleIcon from "@app/_assets/google.svg";
 
 interface GoogleButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {

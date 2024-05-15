@@ -11,6 +11,7 @@
 
   --color-primary: var(--color-blue-500);
   --color-secondary: var(--color-green-500);
+  --color-secondary2: #edeeef;
   --color-on-secondary: var(--color-green-100);
   --color-surface: var(--color-blue-100);
   --color-on-surface: var(--color-grey-700);

@@ -1,8 +1,11 @@
-import "@/globals.css";
+"use client";
+
+import "@app/globals.css";
 import { Inter, Montserrat } from "next/font/google";
-import Header from "@/(auth)/_components/Header/";
-import Footer from "@/(auth)/_components/Footer";
-import styles from "@/(auth)/layout.module.css";
+import Header from "@app/(auth)/_components/Header/";
+import Footer from "@app/(auth)/_components/Footer";
+import styles from "@app/(auth)/layout.module.css";
+import StoreProvider from "@app/StoreProvider";
 
 const inter = Inter({
   weight: ["400", "700"],
@@ -10,11 +13,11 @@ const inter = Inter({
   variable: "--Inter",
 });
 
-export const metadata = {
-  title: "Tape stick",
-  description: "The CRM you stick with",
-};
-
+/* export const metadata = {
+ *   title: "Tape stick",
+ *   description: "The CRM you stick with",
+ * };
+ *  */
 export default function RootLayout({
   children,
 }: {
@@ -23,9 +26,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${styles.body} ${inter.variable}`}>
-        <Header />
-        <main className={styles.main}>{children}</main>
-        <Footer />
+        <StoreProvider>
+          <Header />
+
+          <main className={styles.main}>{children}</main>
+          <Footer />
+        </StoreProvider>
       </body>
     </html>
   );

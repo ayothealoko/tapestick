@@ -1,17 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { TextInput, TextInputProps } from "@/(auth)/_components/TextInput";
+import { TextInput, TextInputProps } from "@app/(auth)/_components/TextInput";
 import styles from "./page.module.css";
 import clsx from "clsx";
-import BigButton from "@/(auth)/_components/BigButton";
-import GoogleButton from "@/(auth)/_components/GoogleButton";
+import BigButton from "@app/(auth)/_components/BigButton";
+import GoogleButton from "@app/(auth)/_components/GoogleButton";
+import { useLoggedInRedirect } from "@app/_hooks/isLoggedInHook";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { SignupFormSchemaRefined, signupFormSchemaRefined } from "shared-code";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios, { AxiosResponse } from "axios";
-import { RedirectType, redirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { useAuthControllerSignupMutation } from "@lib/features/api/api.service";
+import { useAppDispatch } from "@lib/hooks";
+import { tokenReceived } from "@lib/features/auth/auth.slice";
 
 const inputData: Record<
   string,
@@ -57,63 +60,53 @@ const inputData: Record<
   },
 };
 
-interface FormSentStatus {
-  isFormSent: boolean;
-  isTimerRunning: boolean;
-}
-
 export default function Page() {
-  redirect("https://tally.so/r/nP6XG5", RedirectType.push);
-  return <h1>No Access</h1>;
-}
-
-export function Old_Page() {
+  useLoggedInRedirect(true, "/");
+  const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<SignupFormSchemaRefined>({
     resolver: zodResolver(signupFormSchemaRefined),
   });
 
-  const [formSentStatus, setFormSentStatus] = useState<FormSentStatus>({
-    isFormSent: false,
-    isTimerRunning: false,
-  });
+  const [
+    signup,
+    {
+      isLoading: isFormLoading,
+      isSuccess: isFormSuccess,
+      error: submitFormErr,
+      data: formData,
+    },
+  ] = useAuthControllerSignupMutation();
+
   const [formErr, setFormErr] = useState<string>("");
   const { firstName, lastName, email, password, confirmPassword } = inputData;
 
-  const onSubmit: SubmitHandler<SignupFormSchemaRefined> = (data) => {
-    const { isFormSent, isTimerRunning } = formSentStatus;
+  if (submitFormErr) {
+    // TODO
+    reset();
+    setFormErr("fix err message");
+  }
 
-    if (!isFormSent && !isTimerRunning) {
-      // give 8 seconds before resend
-      setFormSentStatus({ isFormSent: true, isTimerRunning: true });
-      setTimeout(() => {
-        setFormSentStatus((status) => {
-          status.isTimerRunning = false;
-          return status;
-        });
-      }, 3000);
+  if (isFormSuccess) {
+    dispatch(tokenReceived(formData.accessToken));
+    router.push("./");
+  }
 
-      sendSignup(data)
-        .then(() => {
-          router.push("./confirmation-sent");
-        })
-        .catch((e) => {
-          setFormSentStatus((status) => {
-            status.isFormSent = false;
-            return status;
-          });
-
-          if (e.response.data) {
-            let d = e.response.data;
-            if (d.type && d.message) {
-              setFormErr(d.message);
-            }
-          }
-        });
+  const onSubmit: SubmitHandler<SignupFormSchemaRefined> = ({
+    email,
+    password,
+    firstName,
+    lastName,
+  }) => {
+    console.log("WE MADWE IF");
+    if (!isFormLoading) {
+      signup({ createUserDto: { email, password, firstName, lastName } });
     }
   };
 
@@ -123,7 +116,11 @@ export function Old_Page() {
 
   return (
     <div className={styles.container}>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className={styles.form}
+        onSubmit={handleSubmit(onSubmit)}
+        ref={formRef}
+      >
         <h1 className={clsx("text-style-h3", styles.h1)}>Sign up</h1>
         {formErrEl}
         <div className={styles.body}>
@@ -155,9 +152,14 @@ export function Old_Page() {
           />
           <BigButton
             text="Sign up"
-            isLoading={
-              formSentStatus.isFormSent && formSentStatus.isTimerRunning
-            }
+            onClick={() => {
+              console.log("yeees");
+              if (formRef.current !== null) {
+                console.log("done");
+                formRef.current.requestSubmit();
+              }
+            }}
+            isLoading={isFormLoading}
           />
           <GoogleButton text="Sign up with Google" />
           <Link className={styles.member} href="/login">
@@ -167,19 +169,4 @@ export function Old_Page() {
       </form>
     </div>
   );
-}
-
-interface FormResponse {
-  hashLink: string;
-}
-
-async function sendSignup<T = FormResponse>(
-  data: SignupFormSchemaRefined
-): Promise<AxiosResponse<T, any>> {
-  return axios.post<T>("http://localhost:8000/api/v1/signup", data, {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-  });
 }

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import logoMonochrome from "@/_assets/logo_monochrome.svg";
+import logoMonochrome from "@app/_assets/logo_monochrome.svg";
 import { ReactElement } from "react";
 import Link from "next/link";
 import styles from "./index.module.css";

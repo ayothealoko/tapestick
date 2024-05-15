@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CheckBox from "../Checkbox";
-import emailIcon from "@/_assets/email.svg";
+import emailIcon from "@app/_assets/email.svg";
 import Image from "next/image";
 
 import styles from "./MessageLine.module.css";

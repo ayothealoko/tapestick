@@ -1,8 +1,8 @@
 import { MouseEvent } from "react";
 import styles from "./index.module.css";
 
-import uncheckedImg from "@/_assets/uncheckedImage.svg";
-import checkedImg from "@/_assets/checkedImage.svg";
+import uncheckedImg from "@app/_assets/uncheckedImage.svg";
+import checkedImg from "@app/_assets/checkedImage.svg";
 
 export type ImgImport = { src: string };
 

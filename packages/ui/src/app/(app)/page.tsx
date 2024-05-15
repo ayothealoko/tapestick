@@ -1,5 +1,5 @@
 "use client";
-import { useLoggedInRedirect } from "@/_hooks/isLoggedInHook";
+import { useLoggedInRedirect } from "@app/_hooks/isLoggedInHook";
 
 import styles from "./page.module.css";
 import NeutralButtonLink from "./_components/NeutralButtonLink";
