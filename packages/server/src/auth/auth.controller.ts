@@ -109,7 +109,7 @@ export class AuthController {
 
 function cookieOptions() {
   const IS_PROD = isProd();
-  const path = '/api/v1/auth/jwt-refesh';
+  const path = '/api/v1/auth/refresh-token';
 
   const options: CookieOptions = {
     httpOnly: true, // to disable accessing cookie via client side js

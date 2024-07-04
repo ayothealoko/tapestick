@@ -1,0 +1,51 @@
+const { ImapFlow } = require('imapflow');
+
+(async () => {
+  const connection = {
+    host: 'mail.treffen.ng',
+    port: 143,
+    isSecure: false,
+    auth: {
+      user: 'ayokanmi.aloko@treffen.ng',
+      pass: '@Electric21',
+    },
+  };
+  const client = new ImapFlow({
+    host: connection.host,
+    port: connection.port,
+    secure: connection.isSecure,
+    logger: false,
+    auth: connection.auth,
+  });
+  console.log('reached1');
+  await client.connect();
+  let lock = await client.getMailboxLock('INBOX');
+  console.log('reached2');
+  const currentDate = new Date();
+  const lastWeekDate = new Date(
+    currentDate.getTime() - 7 * 24 * 60 * 60 * 1000,
+  );
+
+  const msgs = client.fetch(
+    {
+      since: lastWeekDate,
+    },
+    {
+      uid: true,
+      source: true,
+    },
+  );
+
+  console.log('reached3');
+  for await (let msg of msgs) {
+    console.log(msg);
+
+    this.maildirService.addMsg(
+      account.id,
+      [inboxId, true],
+      msg.uid,
+      {},
+      msg.source,
+    );
+  }
+})();

@@ -10,6 +10,7 @@ import { UserService } from '@src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '@src/user/entities/user.entity';
 import { JwtPayload } from './helper';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
     private readonly em: EntityManager,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async login(user: User) {
@@ -52,12 +54,12 @@ export class AuthService {
   async getTokens(payload: { username: string; sub: string }) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_ACCESS_SECRET,
+        secret: this.configService.get<string>('JWT_ACCESS_SECRET'),
         expiresIn: '15m',
       }),
 
       this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_REFRESH_SECRET,
+        secret: this.configService.get<string>('JWT_REFRESH_SECRET'),
         expiresIn: '7d',
       }),
     ]);
@@ -70,6 +72,7 @@ export class AuthService {
       const hashedToken = await argon2.hash(refreshToken);
       await this.userService.update(user.id, { refreshToken: hashedToken });
     } catch (err) {
+      console.log(err);
       throw new BadRequestException('Cannot Update', { cause: err });
     }
   }
