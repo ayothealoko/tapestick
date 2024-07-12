@@ -21,7 +21,6 @@ export class RunningAccounts {
       await worker.connect();
       this.imapWorkers[acc.id] = worker;
     } catch {
-      console.log('failed');
       this.addFaildedAccount(acc.id);
     }
   }

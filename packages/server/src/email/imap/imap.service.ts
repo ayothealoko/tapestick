@@ -32,7 +32,7 @@ export class ImapService implements OnApplicationBootstrap {
     const active = await this.emailService.getAllActive();
 
     const imapPromise = active.map(
-      async (a: Loaded<EmailAccount, 'mailbox'>) => {
+      async (a: Loaded<EmailAccount, 'inboxMailbox' | 'markedMailbox'>) => {
         await this.runningAccount.createWorker(a);
       },
     );
@@ -105,20 +105,19 @@ export class ImapService implements OnApplicationBootstrap {
         isInbox: true,
       });
 
-      await client.getMailboxLock(markedPath);
       await this.syncMailBox({
         client,
         range: { since: lastWeekDate },
         accountId: account.id,
         mailboxId: markedId,
-        isInbox: true,
+        mailboxPath: markedPath,
+        isInbox: false,
       });
     } catch (err) {
       throw err;
     }
   }
 
-  @OnEvent(accountCreatedSub)
   async syncMailBox({
     client,
     range,

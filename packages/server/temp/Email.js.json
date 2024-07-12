@@ -1,0 +1,1 @@
+{"data":{"_id":6000,"properties":{},"primaryKeys":[],"filters":{},"hooks":{},"indexes":[],"uniques":[],"className":"Email","path":"./dist/email/entities/email.entity.js","abstract":true,"internal":true,"constructorParams":[],"toJsonParams":[],"useCache":true},"origin":"./dist/email/entities/email.entity.js","hash":"af2edad57e4b54d51933c351bd069a3b","version":"6.2.1"}

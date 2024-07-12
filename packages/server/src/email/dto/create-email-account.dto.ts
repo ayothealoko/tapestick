@@ -109,6 +109,7 @@ export function dtoToConnection(
       host: dto.host,
       port: dto.port,
       secure: dto.isSecure,
+      logger: false,
       auth: {
         type: 'password',
         user: dto.emailAddr,
@@ -120,6 +121,7 @@ export function dtoToConnection(
       host: dto.host,
       port: dto.port,
       secure: dto.isSecure,
+      logger: false,
       auth: {
         type: 'oauth',
         user: dto.emailAddr,

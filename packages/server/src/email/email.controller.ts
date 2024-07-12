@@ -46,9 +46,24 @@ export class EmailController {
         throw new BadRequestException('Email login failed');
       }
 
-      await this.emailService.createPass(user.id, createPassEmailAccDto);
+      const list = await this.emailService.listMailboxes(
+        dtoToConnection(createPassEmailAccDto),
+      );
+
+      if (list.length == 0) {
+        throw Error('Must have at least one mailbox');
+      }
+
+      const delimiter = list[0].delimiter;
+
+      await this.emailService.createPass(
+        user.id,
+        delimiter,
+        createPassEmailAccDto,
+      );
+
+      return 'created';
     } catch (err) {
-      console.log(err);
       if (err instanceof HttpException) {
         throw err;
       }
@@ -80,9 +95,23 @@ export class EmailController {
         throw new BadRequestException('Email login failed');
       }
 
-      await this.emailService.createOauth(user.id, createOauthEmailAccDto);
+      const list = await this.emailService.listMailboxes(
+        dtoToConnection(createOauthEmailAccDto),
+      );
+
+      if (list.length == 0) {
+        throw Error('Must have at least one mailbox');
+      }
+
+      const delimiter = list[0].delimiter;
+      await this.emailService.createOauth(
+        user.id,
+        delimiter,
+        createOauthEmailAccDto,
+      );
+
+      return 'created';
     } catch (err) {
-      console.log(err);
       if (err instanceof HttpException) {
         throw err;
       }

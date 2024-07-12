@@ -90,7 +90,7 @@ export class MaildirService {
   ) {
     let dir = '';
     if (!mailboxId[1]) {
-      dir = `.${mailboxId}`;
+      dir = `.${mailboxId[0]}`;
     }
 
     let S;

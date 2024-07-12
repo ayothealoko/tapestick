@@ -6,7 +6,7 @@ import {
   wrap,
 } from '@mikro-orm/postgresql';
 import { Injectable } from '@nestjs/common';
-import { ImapFlow } from 'imapflow';
+import { ImapFlow, ListResponse } from 'imapflow';
 import { v4 } from 'uuid';
 
 import {
@@ -24,56 +24,54 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { AccountCreated } from './events/accountCreated.event';
 import { Mailbox } from './entities/mailbox.entity';
 import { accountCreatedSub } from './events/subscription';
-import { UserService } from '@src/user/user.service';
 
 @Injectable()
 export class EmailService {
   constructor(
     private readonly em: EntityManager,
     private readonly eventEmitter: EventEmitter2,
-    private readonly userService: UserService,
   ) {}
 
   @CreateRequestContext()
-  async createPass(userId: string, data: CreatePassEmailAccDto) {
+  async createPass(
+    userId: string,
+    delimiter: string,
+    data: CreatePassEmailAccDto,
+  ) {
     try {
       const em = this.em;
-      const user = await this.userService.findById(userId);
+      const { markedMailboxPath, ...rest } = data;
 
-      const inbox = new Mailbox();
-      const marked = new Mailbox();
-      const emailAccount = new EmailAccPassword();
-      em.persist([emailAccount, inbox, marked]);
-
-      inbox.path = 'INBOX';
-
-      marked.path = data.markedMailboxPath;
-      emailAccount.type = data.type;
-      emailAccount.user = user;
-      emailAccount.markedMailbox = marked;
-      emailAccount.inboxMailbox = inbox;
-      emailAccount.emailAddr = data.emailAddr;
-      emailAccount.canWLContacts = data.canWLContacts;
-      emailAccount.canBLContacts = data.canBLContacts;
-      emailAccount.canWLDomain = data.canWLDomain;
-      emailAccount.canWLRemoved = data.canWLRemoved;
-      emailAccount.host = data.host;
-      emailAccount.port = data.port;
-      emailAccount.isSecure = data.isSecure;
-      emailAccount.pass = data.pass;
-
-      await em.flush();
-
-      data.whiteList.forEach((item) => {
-        const wl = new WhiteList();
-        wl.item = item;
-        emailAccount.blackList.add(wl);
+      // add mailboxes
+      const inbox = em.create(Mailbox, {
+        path: 'INBOX',
       });
 
+      const marked = em.create(Mailbox, {
+        path: `INBOX${delimiter}${markedMailboxPath}`,
+      });
+
+      const emailAccount = em.create(EmailAccPassword, {
+        user: userId,
+        markedMailbox: marked.id,
+        inboxMailbox: inbox.id,
+        ...rest,
+      });
+
+      // create white list
+      data.whiteList.forEach((item) => {
+        em.create(WhiteList, {
+          emailAccount: emailAccount.id,
+          item,
+        });
+      });
+
+      // create black list
       data.blackList.forEach((item) => {
-        const bl = new BlackList();
-        bl.item = item;
-        emailAccount.blackList.add(bl);
+        em.create(BlackList, {
+          emailAccount: emailAccount.id,
+          item,
+        });
       });
 
       await em.flush();
@@ -96,46 +94,41 @@ export class EmailService {
   @CreateRequestContext()
   async createOauth(
     userId: string,
-    createOauthEmailAccDto: CreateOauthEmailAccDto,
+    delimiter: string,
+    data: CreateOauthEmailAccDto,
   ) {
     try {
       const em = this.em;
-      const emailAccountId = v4();
-      const { markedMailboxPath, ...rest } = createOauthEmailAccDto;
+      const { markedMailboxPath, ...rest } = data;
 
       // add mailboxes
-      const inboxId = v4();
-      em.create(Mailbox, {
-        id: inboxId,
+      const inbox = em.create(Mailbox, {
         path: 'INBOX',
       });
 
-      const markedId = v4();
-      em.create(Mailbox, {
-        id: markedId,
-        path: markedMailboxPath,
+      const marked = em.create(Mailbox, {
+        path: `INBOX${delimiter}${markedMailboxPath}`,
       });
 
       const emailAccount = em.create(EmailAccOauth, {
-        id: emailAccountId,
         user: userId,
-        markedMailbox: markedId,
-        inboxMailbox: inboxId,
+        markedMailbox: marked.id,
+        inboxMailbox: inbox.id,
         ...rest,
       });
 
       // create white list
-      createOauthEmailAccDto.whiteList.forEach((item) => {
+      data.whiteList.forEach((item) => {
         em.create(WhiteList, {
-          emailAccount: emailAccountId,
+          emailAccount: emailAccount.id,
           item,
         });
       });
 
       // create black list
-      createOauthEmailAccDto.blackList.forEach((item) => {
+      data.blackList.forEach((item) => {
         em.create(BlackList, {
-          emailAccount: emailAccountId,
+          emailAccount: emailAccount.id,
           item,
         });
       });
@@ -146,15 +139,38 @@ export class EmailService {
         accountCreatedSub,
         new AccountCreated(
           emailAccount,
-          inboxId,
-          'INBOX',
-          markedId,
-          markedMailboxPath,
+          inbox.id,
+          inbox.path,
+          marked.id,
+          marked.path,
         ),
       );
     } catch (err) {
       throw err;
     }
+  }
+
+  async listMailboxes(connection: Connection): Promise<ListResponse[]> {
+    const client = new ImapFlow({
+      host: connection.host,
+      port: connection.port,
+      secure: connection.secure,
+      logger: false,
+      auth: connection.auth,
+    });
+
+    let list;
+
+    try {
+      await client.connect();
+
+      list = await client.list();
+    } catch (e) {
+      throw e;
+    } finally {
+      await client.logout();
+    }
+    return list;
   }
 
   async tryLogin(connection: Connection): Promise<boolean> {
@@ -168,10 +184,9 @@ export class EmailService {
       });
 
       await client.connect();
-      //await client.logout();
+      await client.logout();
       return true;
     } catch (e) {
-      console.log(e);
       return false;
     }
   }
@@ -218,7 +233,7 @@ export class EmailService {
     try {
       const em = this.em;
       const mailbox = await em.findOneOrFail(Mailbox, { id: mailboxId });
-      if (mailbox.latestUid == undefined || mailbox.latestUid > uid) {
+      if (mailbox.latestUid !== undefined && mailbox.latestUid > uid) {
         return;
       }
 
@@ -254,6 +269,7 @@ export interface Connection {
   host: string;
   port: number;
   secure: boolean;
+  logger: false | undefined;
   auth:
     | { type: 'password'; user: string; pass: string }
     | { type: 'oauth'; user: string; accessToken: string };

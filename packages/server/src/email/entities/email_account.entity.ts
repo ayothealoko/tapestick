@@ -88,12 +88,12 @@ function isEmailAccOauth(acc: EmailAccount): acc is EmailAccOauth {
 }
 
 export function entityToConnection(acc: EmailAccount): Connection | null {
-  console.log(acc);
   if (isEmailAccPassword(acc)) {
     return {
       host: acc.host,
       port: acc.port,
       secure: acc.isSecure,
+      logger: false,
       auth: {
         type: 'password',
         user: acc.emailAddr,
@@ -107,6 +107,7 @@ export function entityToConnection(acc: EmailAccount): Connection | null {
       host: acc.host,
       port: acc.port,
       secure: acc.isSecure,
+      logger: false,
       auth: {
         type: 'oauth',
         user: acc.emailAddr,

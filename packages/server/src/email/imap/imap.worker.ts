@@ -11,7 +11,7 @@ export class ImapWorker {
   connection: Connection;
   dispatch: ImapDispatch;
   account: EmailAccount;
-  connStore: Record<string, [MailboxLockObject, ImapFlow]>;
+  boxStore: Record<string, [ImapFlow, MailboxLockObject]> = {};
 
   constructor(account: EmailAccount, dispatch: ImapDispatch) {
     const connection = entityToConnection(account);
@@ -25,31 +25,28 @@ export class ImapWorker {
   }
 
   async connect() {
-    const { inboxMailbox, markedMailbox } = this.account;
-    await Promise.all([
-      this.addMailBox(inboxMailbox),
-      this.addMailBox(markedMailbox),
-    ]);
-    return;
+    this.setupMailbox(this.account.inboxMailbox);
+    this.setupMailbox(this.account.markedMailbox);
   }
 
-  async addMailBox(mailbox: Mailbox) {
-    const box = new ImapFlow(this.connection);
+  async setupMailbox(mailbox: Mailbox) {
+    const client = new ImapFlow(this.connection);
+    await client.connect();
 
-    const boxLock = await box.getMailboxLock(mailbox.path);
-
-    this.connStore[mailbox.id] = [boxLock, box];
-
-    box.on('exists', async ({ count, prevCount }) => {
+    client.on('exists', async ({ count, prevCount, path }) => {
       const existsEvent: ExistsEvent = {
         type: EventEnum.EXISTS,
         accountId: this.account.id,
-        path: mailbox.path,
+        path: path,
         count,
         prevCount,
       };
 
+      console.log('log', existsEvent);
       await this.dispatch(existsEvent);
     });
+
+    const lock = await client.getMailboxLock(mailbox.path);
+    this.boxStore[mailbox.path] = [client, lock];
   }
 }

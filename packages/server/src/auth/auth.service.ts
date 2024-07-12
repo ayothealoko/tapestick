@@ -72,7 +72,6 @@ export class AuthService {
       const hashedToken = await argon2.hash(refreshToken);
       await this.userService.update(user.id, { refreshToken: hashedToken });
     } catch (err) {
-      console.log(err);
       throw new BadRequestException('Cannot Update', { cause: err });
     }
   }

@@ -5,3 +5,4 @@ packages/*/lib
 .idea
 .env*
 coverage/
+tmp_maildir
